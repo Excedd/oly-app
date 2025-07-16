@@ -1,0 +1,17 @@
+# Go stuff
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Vendor and cache
+vendor/
+**/vendor/
+.idea/
+.vscode/
+.git/
+node_modules/
+*.log
+*.tmp

@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"log"
+	PersonalRecordHandler "oly-backend/application/handler/PersonalRecordHandler"
+	TrainingHandler "oly-backend/application/handler/TrainingHandler"
+
 	PersonalRecordRepository "oly-backend/repository"
-	PersonalRecordHandler "oly-backend/src/application/handler/PersonalRecordHandler"
 	"os"
 	"sync"
 	"time"
@@ -51,6 +53,8 @@ func main() {
 	app.Get("/api/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello with MongoDB backend!")
 	})
+
+	app.Get("/training/calculate", TrainingHandler.HandlePlatesForRounds())
 
 	log.Println("Backend listening on :8080")
 	log.Fatal(app.Listen(":8080"))

@@ -1,4 +1,4 @@
-package personalRecordHandler
+package PersonalRecordHandler
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	personalRecordRepository "oly-backend/repository"
 	"time"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 )
 
 func HandleGetPRs(c *fiber.Ctx) error {
@@ -14,13 +14,23 @@ func HandleGetPRs(c *fiber.Ctx) error {
 	defer cancel()
 
 	var result d.PersonalRecord
-	res, err := personalRecordRepository.GetPRs(ctx, map[string]interface{}{})
+	res, err := personalRecordRepository.GetPRs(ctx, map[string]any{})
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, "Error accessing repository")
-	}
-	if err := res.Decode(&result); err != nil {
-		return fiber.NewError(fiber.StatusNotFound, "No PRs found")
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"success": false,
+			"error":   "Error accessing repository",
+		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(result)
+	if err := res.Decode(&result); err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"success": false,
+			"error":   "No PRs found",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"success": true,
+		"data":    result,
+	})
 }

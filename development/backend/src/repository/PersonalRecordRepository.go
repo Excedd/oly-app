@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"oly-backend/domain"
 	d "oly-backend/domain"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -30,7 +29,7 @@ func GetPRs(ctx context.Context, filter interface{}) (*mongo.SingleResult, error
 	return instance.collection.FindOne(ctx, filter), nil
 }
 
-func SavePRs(ctx context.Context, pr domain.PersonalRecord) error {
+func SavePRs(ctx context.Context, pr d.PersonalRecord) error {
 	if instance == nil {
 		return mongo.ErrNilDocument
 	}
